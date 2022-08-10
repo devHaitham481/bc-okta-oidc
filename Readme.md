@@ -1,17 +1,17 @@
-# BigCommerce Auth0 OpenID Connect (OIDC) Customer Login Middleware
+# BigCommerce Okta OpenID Connect (OIDC) Customer Login Middleware
 
 This is a simple Express example (ie, not production-ready) of how Auth0 OIDC can be used to create and authenticate users into a Stencil BigCommerce Storefront using the Customer Login API that accepts a JWT.
 
 This example uses only Google login and creates the user in BigCommerce if they do not already exist. Further work required to add additional.
 
-Uses [Auth0's Open ID Connect](https://github.com/auth0/express-openid-connect)
+Uses [Okta Open ID Connect](https://www.npmjs.com/package/@okta/oidc-middleware)
 
 ## Setup 
 
 Copy .env.template to .env ander complete details:
 
-    ISSUER_BASE_URL= {the base domain from Auth0}
-    CLIENT_ID= {the client ID from the app created in Auth0}
+    ISSUER_BASE_URL= {the base domain from Okta}
+    CLIENT_ID= {the client ID from the app created in Okta}
     BASE_URL= {URL of the middleware}
     SECRET= {min 32 char secret}
 
@@ -26,7 +26,7 @@ Copy .env.template to .env ander complete details:
     BC_CLIENT_ID=
     BC_CLIENT_SECRET=
 
-### Auth0 Setup
+### Okta Setup
 
 Create a new account and application. Configure Applicaiton URIs:
 
