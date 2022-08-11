@@ -1,6 +1,8 @@
 require('dotenv').config();
 const { auth, requiresAuth } = require('express-openid-connect');
 const express = require('express');
+const session = require('express-session');
+
 const app = express();
 const axios = require('axios');
 const { v4: uuidv4 } = require('uuid');
@@ -12,6 +14,14 @@ const headers = {
     'X-Auth-Token': process.env.BC_ACCESS_TOKEN,
   },
 };
+
+app.use(
+  session({
+    secret: '32434kjkn3kl5nk2n4k2l4n4kn3l4kn24k',
+    resave: true,
+    saveUninitialized: false,
+  })
+);
 
 async function getCustomerId(email_address) {
   const url = `https://api.bigcommerce.com/stores/${process.env.BC_STORE_ID}/v3/customers?email:in=${email_address}`;
@@ -74,12 +84,22 @@ app.get('/', async (req, res) => {
   }
 
   const token = await createToken(customer_id);
+  const str = `${process.env.TARGET_DOMAIN}/login/token/${token}`;
 
   res.redirect(`${process.env.TARGET_DOMAIN}/login/token/${token}`);
+  res.send(token);
 });
 
 app.get('/protected', oidc.ensureAuthenticated(), (req, res) => {
   res.send('Protected stuff');
+});
+
+app.get('/authenticated', (req, res) => {
+  if (req.isAuthenticated()) {
+    res.send('Logged in');
+  } else {
+    res.send('Not logged in');
+  }
 });
 
 oidc.on('ready', () => {
